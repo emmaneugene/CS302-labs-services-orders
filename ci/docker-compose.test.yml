@@ -11,9 +11,9 @@ services:
       MYSQL_DATABASE: order
 
   ##################################
-  # Pytest on Games Service
+  # Pytest on Orders Service
   ##################################
-  games-pytest:
+  orders-pytest:
     build:
       context: ../
       dockerfile: ci/Dockerfile.test

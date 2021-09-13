@@ -1,10 +1,11 @@
 import os
 
+from datetime import datetime
+
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
-from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('db_conn') + '/order'
@@ -67,9 +68,9 @@ class Order_Item(db.Model):
 @app.route("/health")
 def health_check():
     return jsonify(
-            {
-                "message": "Service is healthy."
-            }
+        {
+            "message": "Service is healthy."
+        }
     ), 200
 
 
