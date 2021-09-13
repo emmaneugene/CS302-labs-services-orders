@@ -112,18 +112,13 @@ def test_one_invalid(client):
 @pytest.mark.dependency(depends='test_get_all')
 def test_create_new_order(client):
     result = call(client, 'orders', 'POST', {
-        "data": {
-            "customer_email": "haniel@danley.com",
-            "order_id": 7,
-            "status": "NEW",
-            "order_items": [
-                {
-                    "item_id": 12,
-                    "game_id": 55,
-                    "quantity": 88
-                }
-            ]
-        }
+        "customer_email": "haniel@danley.com",
+        "order_items": [
+            {
+                "game_id": 55,
+                "quantity": 88
+            }
+        ]
     })
     assert result['code'] == 201
 
@@ -141,20 +136,18 @@ def test_cancel_existing_order(client):
     })
     assert result['code'] == 200
     assert result['json']['data'] == {
-  "data": {
-    "created": "Tue, 10 Aug 2021 00:00:00 GMT", 
-    "customer_email": "phris@coskitt.com", 
-    "order_id": 6, 
-    "order_items": [
-      {
-        "game_id": 9, 
-        "item_id": 11, 
-        "quantity": 1
-      }
-    ], 
-    "status": "CANCELLED"
-  }
-}
+        "created": "Tue, 10 Aug 2021 00:00:00 GMT", 
+        "customer_email": "phris@coskitt.com", 
+        "order_id": 6, 
+        "order_items": [
+            {
+                "game_id": 9, 
+                "item_id": 11, 
+                "quantity": 1
+            }
+        ], 
+        "status": "CANCELLED"
+    }
 
 
 @pytest.mark.dependency(depends=['test_get_all'])
