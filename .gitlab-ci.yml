@@ -68,7 +68,7 @@ integration-tests-alt:
       - ci/pytest_report.html
 
 # based on: https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Docker.gitlab-ci.yml
-release_image:
+release-image:
   stage: Release
   image: docker:20.10.7
   services:
@@ -79,7 +79,7 @@ release_image:
     - docker build --pull -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA" .
     - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA"
 
-production_ecs:
+deploy-ecs:
   stage: Deploy
   when: manual
   image: 'registry.gitlab.com/gitlab-org/cloud-deploy/aws-ecs:latest'
