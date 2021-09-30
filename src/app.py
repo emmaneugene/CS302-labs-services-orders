@@ -1,6 +1,6 @@
 import os
 
-import datetime
+from datetime import datetime
 
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -70,7 +70,7 @@ def health_check():
     return jsonify(
         {
             'message': 'Orders service is healthy.',
-            'time': str(datetime.datetime.now())
+            'time': str(datetime.now())
         }
     ), 200
 
