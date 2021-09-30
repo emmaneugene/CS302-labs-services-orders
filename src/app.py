@@ -28,16 +28,16 @@ class Order(db.Model):
 
     def json(self):
         dto = {
-            "order_id": self.order_id,
-            "customer_email": self.customer_email,
-            "status": self.status,
-            "created": self.created
+            'order_id': self.order_id,
+            'customer_email': self.customer_email,
+            'status': self.status,
+            'created': self.created
         }
 
-        dto["order_items"] = []
+        dto['order_items'] = []
 
         for order_item in self.order_items:
-            dto["order_items"].append(order_item.json())
+            dto['order_items'].append(order_item.json())
 
         return dto
 
@@ -65,50 +65,51 @@ class Order_Item(db.Model):
         }
 
 
-@app.route("/health")
+@app.route('/health')
 def health_check():
     return jsonify(
         {
-            "message": "Service is healthy."
+            'message': 'Orders service is healthy.',
+            'time': str(datetime.datetime.now())
         }
     ), 200
 
 
-@app.route("/orders")
+@app.route('/orders')
 def get_all():
     order_list = Order.query.all()
     if len(order_list) != 0:
         return jsonify(
             {
-                "data": {
-                    "orders": [order.json() for order in order_list]
+                'data': {
+                    'orders': [order.json() for order in order_list]
                 }
             }
         ), 200
     return jsonify(
         {
-            "message": "There are no orders."
+            'message': 'There are no orders.'
         }
     ), 404
 
 
-@app.route("/orders/<int:order_id>")
+@app.route('/orders/<int:order_id>')
 def find_by_id(order_id):
     order = Order.query.filter_by(order_id=order_id).first()
     if order:
         return jsonify(
             {
-                "data": order.json()
+                'data': order.json()
             }
         ), 200
     return jsonify(
         {
-            "message": "Order not found."
+            'message': 'Order not found.'
         }
     ), 404
 
 
-@app.route("/orders", methods=['POST'])
+@app.route('/orders', methods=['POST'])
 def new_order():
     try:
         customer_email = request.json.get('customer_email')
@@ -124,19 +125,19 @@ def new_order():
     except Exception as e:
         return jsonify(
             {
-                "message": "An error occurred creating the order.",
-                "error": str(e)
+                'message': 'An error occurred creating the order.',
+                'error': str(e)
             }
         ), 500
 
     return jsonify(
         {
-            "data": order.json()
+            'data': order.json()
         }
     ), 201
 
 
-@app.route("/orders/<int:order_id>", methods=['PATCH'])
+@app.route('/orders/<int:order_id>', methods=['PATCH'])
 def update_order(order_id):
     order = Order.query.filter_by(order_id=order_id).first()
     if order is not None:
@@ -148,21 +149,21 @@ def update_order(order_id):
         except Exception as e:
             return jsonify(
                 {
-                    "message": "An error occurred updating the order.",
-                    "error": str(e)
+                    'message': 'An error occurred updating the order.',
+                    'error': str(e)
                 }
             ), 500
         return jsonify(
             {
-                "data": order.json()
+                'data': order.json()
             }
         )
     return jsonify(
         {
-            "data": {
-                "order_id": order_id
+            'data': {
+                'order_id': order_id
             },
-            "message": "Order not found."
+            'message': 'Order not found.'
         }
     ), 404
 
