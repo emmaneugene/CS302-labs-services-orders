@@ -5,7 +5,7 @@ from datetime import datetime
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('db_conn') + '/order'
@@ -13,6 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100,
                                            'pool_recycle': 280}
 
+metrics = PrometheusMetrics(app)
 db = SQLAlchemy(app)
 
 CORS(app)
@@ -65,6 +66,7 @@ class Order_Item(db.Model):
         }
 
 
+@metrics.do_not_track()
 @app.route('/health')
 def health_check():
     return jsonify(
